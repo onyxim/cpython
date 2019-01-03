@@ -89,7 +89,9 @@ char *_PyParser_TokenNames[] = {
     /* This table must match the #defines in token.h! */
     "OP",
     "<ERRORTOKEN>",
-    "<N_TOKENS>"
+    "<N_TOKENS>",
+    "INCREMENT",
+    "DECREMENT"
 };
 
 /* Create and initialize a new tok_state structure */
@@ -1102,11 +1104,13 @@ PyToken_TwoChars(int c1, int c2)
         break;
     case '+':
         switch (c2) {
+        case '+':               return INCREMENT;
         case '=':               return PLUSEQUAL;
         }
         break;
     case '-':
         switch (c2) {
+        case '-':               return DECREMENT;
         case '=':               return MINEQUAL;
         }
         break;
