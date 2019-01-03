@@ -425,6 +425,16 @@ PyCode_Optimize(PyObject *code, PyObject* consts, PyObject *names,
                 cumlc = 0;
                 break;
 
+                // New Otus opcode
+            case LOAD_FAST:
+                j = GETARG(codestr, i);
+                if (codestr[i+3] == LOAD_CONST && j == 0)
+                {
+                    codestr[i+3] = LOAD_OTUS;
+                    memset(codestr+i, NOP, 3);
+                }
+                break;
+
                 /* Try to fold tuples of constants (includes a case for lists
                    which are only used for "in" and "not in" tests).
                    Skip over BUILD_SEQN 1 UNPACK_SEQN 1.

@@ -158,6 +158,7 @@ extern "C" {
 
 #define SET_ADD         146
 #define MAP_ADD         147
+#define LOAD_OTUS       148
 
 
 enum cmp_op {PyCmp_LT=Py_LT, PyCmp_LE=Py_LE, PyCmp_EQ=Py_EQ, PyCmp_NE=Py_NE, PyCmp_GT=Py_GT, PyCmp_GE=Py_GE,

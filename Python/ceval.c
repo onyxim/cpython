@@ -1240,6 +1240,23 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
             FAST_DISPATCH();
         }
 
+        TARGET(LOAD_OTUS)
+        {
+            x = GETLOCAL(0);
+            if (x != NULL) {
+                Py_INCREF(x);
+                PUSH(x);
+                x = GETITEM(consts, oparg);
+                Py_INCREF(x);
+                PUSH(x);
+                goto fast_next_opcode;
+            }
+            format_exc_check_arg(PyExc_UnboundLocalError,
+                                 UNBOUNDLOCAL_ERROR_MSG,
+                                 PyTuple_GetItem(co->co_varnames, oparg));
+            break;
+        }
+
         PREDICTED_WITH_ARG(STORE_FAST);
         TARGET(STORE_FAST)
         {
