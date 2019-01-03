@@ -297,6 +297,15 @@ PyCode_Optimize(PyObject *code, PyObject* consts, PyObject *names,
                 cumlc = 0;
                 break;
 
+
+                // New OTUS opcode
+            case LOAD_FAST:
+                if (nextop == LOAD_CONST  && get_arg(codestr, i) == 0){
+                    codestr[op_start + 1] = PACKOPARG(LOAD_OTUS, 0);
+                    fill_nops(codestr, op_start, nexti + 1);
+                }
+                break;
+
                 /* Try to fold tuples of constants.
                    Skip over BUILD_SEQN 1 UNPACK_SEQN 1.
                    Replace BUILD_SEQN 2 UNPACK_SEQN 2 with ROT2.

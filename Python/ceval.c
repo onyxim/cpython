@@ -1084,6 +1084,25 @@ _PyEval_EvalFrameDefault(PyFrameObject *f, int throwflag)
             FAST_DISPATCH();
         }
 
+        // New LOAD_OTUS opcode
+        TARGET(LOAD_OTUS){
+            PyObject *value2 = GETLOCAL(0);
+            if (value2 == NULL) {
+            format_exc_check_arg(PyExc_UnboundLocalError,
+            UNBOUNDLOCAL_ERROR_MSG,
+            PyTuple_GetItem(co->co_varnames, oparg));
+            goto error;
+            }
+            Py_INCREF(value2);
+            PUSH(value2);
+            // load_const
+            PyObject *value3 = GETITEM(consts, oparg);
+            Py_INCREF(value3);
+            PUSH(value3);
+            FAST_DISPATCH();
+
+        }
+
         PREDICTED(LOAD_CONST);
         TARGET(LOAD_CONST) {
             PyObject *value = GETITEM(consts, oparg);
